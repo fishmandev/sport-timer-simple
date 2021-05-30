@@ -25,9 +25,16 @@
   <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
     integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
   <script>
+    const wakeLock = async () => {
+      if ('wakeLock' in navigator) {
+        return await navigator.wakeLock.request();
+      }
+      return false;
+    }
     $('#start').click(() => {
+      const wakeLockHandler = wakeLock();
       $('.center').show();
-      let time = 10;
+      let time = 40;
       $('h1').text(time);
       let initialOffset = '440';
       let i = 1;
@@ -39,6 +46,9 @@
         $('h1').text(time - i);
         if (i == time) {
           clearInterval(interval);
+          wakeLockHandler.then(wakeLock => {
+            wakeLock && wakeLock.release();
+          });
           $('.center').hide();
           $('.circle_animation').css('stroke-dashoffset', 440);
           return;
