@@ -26,38 +26,49 @@
   <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
     integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
   <script>
-    const wakeLock = async () => {
-      if ('wakeLock' in navigator) {
-        return await navigator.wakeLock.request();
-      }
-      return false;
-    }
-    $('#start').click(() => {
-      const wakeLockHandler = wakeLock();
-      $('.center').show();
-      let time = 40;
-      $('h1').text(time);
-      let initialOffset = '440';
-      let i = 1;
-
-      /* Need initial run as interval hasn't yet occured... */
-      $('.circle_animation').css('stroke-dashoffset', initialOffset - (1 * (initialOffset / time)));
-
-      let interval = setInterval(function () {
-        $('h1').text(time - i);
-        if (i == time) {
-          clearInterval(interval);
-          wakeLockHandler.then(wakeLock => {
-            wakeLock && wakeLock.release();
-          });
-          $('.center').hide();
-          $('.circle_animation').css('stroke-dashoffset', 440);
-          return;
+    const downtime = () => {
+      const wakeLock = async () => {
+        if ('wakeLock' in navigator) {
+          return await navigator.wakeLock.request();
         }
-        $('.circle_animation').css('stroke-dashoffset', initialOffset - ((i + 1) * (initialOffset / time)));
-        i++;
-      }, 1000);
+        return false;
+      }
+      return new Promise(resolve => {
+        const wakeLockHandler = wakeLock();
+        $('.center').show();
+        let time = 40;
+        $('h1').text(time);
+        let initialOffset = '440';
+        let i = 1;
 
+        /* Need initial run as interval hasn't yet occured... */
+        $('.circle_animation').css('stroke-dashoffset', initialOffset - (1 * (initialOffset / time)));
+        let interval = setInterval(function () {
+          $('h1').text(time - i);
+          if (i == time) {
+            clearInterval(interval);
+            wakeLockHandler.then(wakeLock => {
+              wakeLock && wakeLock.release();
+            }); 
+          }
+          if (i < time) {
+            $('.circle_animation').css('stroke-dashoffset', initialOffset - ((i + 1) * (initialOffset / time)));
+            i++;
+          } else {
+            $('.center').hide();
+            $('.circle_animation').css('stroke-dashoffset', 440);
+            let x = setInterval(() => {
+              clearInterval(x);  
+              return resolve();
+            }, 100);
+          }
+        }, 1000);
+      });
+    };
+
+    $('#start').click(async () => {
+      await downtime();
+      await downtime();
     });
   </script>
 </body>
