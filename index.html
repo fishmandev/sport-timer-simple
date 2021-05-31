@@ -26,7 +26,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
     integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
   <script>
-    const downtime = () => {
+    const downtime = (time, color) => {
       const wakeLock = async () => {
         if ('wakeLock' in navigator) {
           return await navigator.wakeLock.request();
@@ -35,8 +35,8 @@
       }
       return new Promise(resolve => {
         const wakeLockHandler = wakeLock();
+        $('.circle_animation').css('stroke', color);
         $('.center').show();
-        let time = 40;
         $('h1').text(time);
         let initialOffset = '440';
         let i = 1;
@@ -67,8 +67,8 @@
     };
 
     $('#start').click(async () => {
-      await downtime();
-      await downtime();
+      await downtime(5, "#6fdb6f");
+      await downtime(10, "#84b8f0");
     });
   </script>
 </body>
