@@ -26,6 +26,10 @@
   <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
     integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
   <script>
+    const params = [
+        { time: 5, color: '#6fdb6f' },
+        { time: 10, color: '#84b8f0' }
+      ];
     const downtime = (time, color) => {
       const wakeLock = async () => {
         if ('wakeLock' in navigator) {
@@ -49,7 +53,7 @@
             clearInterval(interval);
             wakeLockHandler.then(wakeLock => {
               wakeLock && wakeLock.release();
-            }); 
+            });
           }
           if (i < time) {
             $('.circle_animation').css('stroke-dashoffset', initialOffset - ((i + 1) * (initialOffset / time)));
@@ -58,7 +62,7 @@
             $('.center').hide();
             $('.circle_animation').css('stroke-dashoffset', 440);
             let x = setInterval(() => {
-              clearInterval(x);  
+              clearInterval(x);
               return resolve();
             }, 100);
           }
@@ -67,8 +71,9 @@
     };
 
     $('#start').click(async () => {
-      await downtime(5, "#6fdb6f");
-      await downtime(10, "#84b8f0");
+      for (const param of params) {
+        await downtime(param.time, param.color);
+      }
     });
   </script>
 </body>
