@@ -9,6 +9,12 @@
  }
 
  .container { position: relative; }
+
+ .title {
+  text-align:center;
+  padding-bottom: 20px;
+  font-size: 20px;
+ }
  
  .item {
   text-align:center;

@@ -9,11 +9,16 @@
 
 <body>
   <audio id="player">
-    <source src="timer.mp3"  type="audio/mpeg">
+    <source src="timer.mp3" type="audio/mpeg">
+  </audio>
+  </audio>
    </audio>   
+  </audio>
+  </audio>
   <button id="start">Start</button>
   <div class="container">
     <div class="center">
+      <div class="title"></div>
       <div class="item html">
         <h1></h1>
         <svg width="160" height="160" xmlns="http://www.w3.org/2000/svg">
@@ -30,10 +35,10 @@
     integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
   <script>
     const params = [
-        { time: 15, color: '#6fdb6f' },
-        { time: 10, color: '#84b8f0' }
-      ];
-    const downtime = (time, color) => {
+      { time: 15, color: '#6fdb6f', title: 'Foo' },
+      { time: 10, color: '#84b8f0', title: 'Bar' }
+    ];
+    const downtime = (time, color, title = '') => {
       const wakeLock = async () => {
         if ('wakeLock' in navigator) {
           return await navigator.wakeLock.request();
@@ -44,6 +49,7 @@
         const wakeLockHandler = wakeLock();
         $('.circle_animation').css('stroke', color);
         $('.center').show();
+        $('.title').text(title);
         $('h1').text(time);
         let initialOffset = '440';
         let i = 1;
@@ -78,7 +84,7 @@
 
     $('#start').click(async () => {
       for (const param of params) {
-        await downtime(param.time, param.color);
+        await downtime(param.time, param.color, param.title);
       }
     });
   </script>
