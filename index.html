@@ -8,6 +8,9 @@
 </head>
 
 <body>
+  <audio id="player">
+    <source src="timer.mp3"  type="audio/mpeg">
+   </audio>   
   <button id="start">Start</button>
   <div class="container">
     <div class="center">
@@ -27,7 +30,7 @@
     integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
   <script>
     const params = [
-        { time: 5, color: '#6fdb6f' },
+        { time: 15, color: '#6fdb6f' },
         { time: 10, color: '#84b8f0' }
       ];
     const downtime = (time, color) => {
@@ -57,6 +60,9 @@
           }
           if (i < time) {
             $('.circle_animation').css('stroke-dashoffset', initialOffset - ((i + 1) * (initialOffset / time)));
+            if ((time - i) == 5) {
+              $('#player')[0].play();
+            }
             i++;
           } else {
             $('.center').hide();
