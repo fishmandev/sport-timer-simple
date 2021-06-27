@@ -1,6 +1,5 @@
 .center {
   height: 50%;
-  width: 50%;
   overflow: auto;
   margin: auto;
   position: fixed;
@@ -13,7 +12,8 @@
  .title {
   text-align:center;
   padding-bottom: 20px;
-  font-size: 20px;
+  font-size: 30px;
+  font-weight: bold;
  }
  
  .item {
